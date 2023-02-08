@@ -168,7 +168,11 @@ struct DockOverlayCrossPrivate
 	//============================================================================
 	void updateDropIndicatorIcon(QWidget* DropIndicatorWidget)
 	{
-		QLabel* l = qobject_cast<QLabel*>(DropIndicatorWidget);
+#ifdef CUSTOM_CAST
+        QLabel* l = dynamic_cast<QLabel*>(DropIndicatorWidget);
+#else
+        QLabel* l = qobject_cast<QLabel*>(DropIndicatorWidget);
+#endif
         const qreal metric = dropIndicatiorWidth(l);
 		const QSizeF size(metric, metric);
 
@@ -381,7 +385,11 @@ DockWidgetArea CDockOverlay::dropAreaUnderCursor() const
 		return Result;
 	}
 
-	CDockAreaWidget* DockArea = qobject_cast<CDockAreaWidget*>(d->TargetWidget.data());
+#ifdef CUSTOM_CAST
+    CDockAreaWidget* DockArea = dynamic_cast<CDockAreaWidget*>(d->TargetWidget.data());
+#else
+    CDockAreaWidget* DockArea = qobject_cast<CDockAreaWidget*>(d->TargetWidget.data());
+#endif
 	if (!DockArea)
 	{
 		return Result;

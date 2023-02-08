@@ -91,7 +91,11 @@ static void updateFloatingWidgetFocusStyle(CFloatingDockContainer* FloatingWidge
 	{
 		return;
 	}
+#ifdef CUSTOM_CAST
+    auto TitleBar = dynamic_cast<CFloatingWidgetTitleBar*>(FloatingWidget->titleBarWidget());
+#else
     auto TitleBar = qobject_cast<CFloatingWidgetTitleBar*>(FloatingWidget->titleBarWidget());
+#endif
     if (!TitleBar)
     {
         return;
@@ -209,7 +213,11 @@ void DockFocusControllerPrivate::updateDockWidgetFocus(CDockWidget* DockWidget)
 void CDockFocusController::onDockWidgetVisibilityChanged(bool Visible)
 {
     auto Sender = sender();
+#ifdef CUSTOM_CAST
+    auto DockWidget = dynamic_cast<ads::CDockWidget*>(Sender);
+#else
     auto DockWidget = qobject_cast<ads::CDockWidget*>(Sender);
+#endif
     disconnect(Sender, SIGNAL(visibilityChanged(bool)), this, SLOT(onDockWidgetVisibilityChanged(bool)));
     if (DockWidget && Visible)
 	{
@@ -279,7 +287,11 @@ void CDockFocusController::onApplicationFocusChanged(QWidget* focusedOld, QWidge
 		return;
 	}
 
+#ifdef CUSTOM_CAST
+    CDockWidget* DockWidget = dynamic_cast<CDockWidget*>(focusedNow);
+#else
     CDockWidget* DockWidget = qobject_cast<CDockWidget*>(focusedNow);
+#endif
 	if (!DockWidget)
 	{
 		DockWidget = internal::findParent<CDockWidget*>(focusedNow);
@@ -335,7 +347,11 @@ void CDockFocusController::onFocusedDockAreaViewToggled(bool Open)
 		return;
 	}
 
+#ifdef CUSTOM_CAST
+	CDockAreaWidget* DockArea = dynamic_cast<CDockAreaWidget*>(sender());
+#else
 	CDockAreaWidget* DockArea = qobject_cast<CDockAreaWidget*>(sender());
+#endif
 	if (!DockArea || Open)
 	{
 		return;
@@ -359,10 +375,18 @@ void CDockFocusController::notifyWidgetOrAreaRelocation(QWidget* DroppedWidget)
 		return;
 	}
 
+#ifdef CUSTOM_CAST
+	CDockWidget* DockWidget = dynamic_cast<CDockWidget*>(DroppedWidget);
+#else
 	CDockWidget* DockWidget = qobject_cast<CDockWidget*>(DroppedWidget);
+#endif
     if (!DockWidget)
     {
+#ifdef CUSTOM_CAST
+        CDockAreaWidget* DockArea = dynamic_cast<CDockAreaWidget*>(DroppedWidget);
+#else
         CDockAreaWidget* DockArea = qobject_cast<CDockAreaWidget*>(DroppedWidget);
+#endif
         if (DockArea)
         {
             DockWidget = DockArea->currentDockWidget();

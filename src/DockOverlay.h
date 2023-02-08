@@ -152,7 +152,7 @@ struct DockOverlayCrossPrivate;
  * }
  * \endcode
  */
-class CDockOverlayCross : public QWidget
+class ADS_EXPORT CDockOverlayCross : public QWidget
 {
 	Q_OBJECT
 	Q_PROPERTY(QString iconColors READ iconColors WRITE setIconColors)

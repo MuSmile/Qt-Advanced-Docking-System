@@ -377,7 +377,11 @@ void CDockWidget::setWidget(QWidget* widget, eInsertMode InsertMode)
 		takeWidget();
 	}
 
-	auto ScrollAreaWidget = qobject_cast<QAbstractScrollArea*>(widget);
+#ifdef CUSTOM_CAST
+    auto ScrollAreaWidget = dynamic_cast<QAbstractScrollArea*>(widget);
+#else
+    auto ScrollAreaWidget = qobject_cast<QAbstractScrollArea*>(widget);
+#endif
 	if (ScrollAreaWidget || ForceNoScrollArea == InsertMode)
 	{
 		d->Layout->addWidget(widget);
@@ -634,7 +638,11 @@ void CDockWidget::toggleView(bool Open)
 {
 	// If the toggle view action mode is ActionModeShow, then Open is always
 	// true if the sender is the toggle view action
-	QAction* Sender = qobject_cast<QAction*>(sender());
+#ifdef CUSTOM_CAST
+    QAction* Sender = dynamic_cast<QAction*>(sender());
+#else
+    QAction* Sender = qobject_cast<QAction*>(sender());
+#endif
 	if (Sender == d->ToggleViewAction && !d->ToggleViewAction->isCheckable())
 	{
 		Open = true;

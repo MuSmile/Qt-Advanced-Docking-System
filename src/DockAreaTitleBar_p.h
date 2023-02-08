@@ -45,7 +45,7 @@ using tTitleBarButton = QToolButton;
 * CDockManager::DockAreaHas_xxx_Button - if set to 'false' keeps the button always invisible
 * CDockManager::DockAreaHideDisabledButtons - if set to 'true' hides button when it is disabled
 */
-class CTitleBarButton : public tTitleBarButton
+class ADS_EXPORT CTitleBarButton : public tTitleBarButton
 {
 	Q_OBJECT
 		
@@ -61,6 +61,7 @@ public:
 	* Adjust this visibility change request with our internal settings:
 	*/
 	virtual void setVisible(bool visible) override;
+	void forceVisible(bool visible);
 
 protected:
 	/**
@@ -78,7 +79,7 @@ protected:
 * into a floating widget, then mouse events are not handled anymore and dragging
 * of the floating widget stops.
 */
-class CSpacerWidget : public QWidget
+class ADS_EXPORT CSpacerWidget : public QWidget
 {
 	Q_OBJECT
 public:

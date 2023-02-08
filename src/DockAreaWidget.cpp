@@ -51,6 +51,7 @@
 #include "DockAreaTabBar.h"
 #include "DockSplitter.h"
 #include "DockAreaTitleBar.h"
+#include "DockAreaTitleBar_p.h"
 #include "DockComponentsFactory.h"
 #include "DockWidgetTab.h"
 #include "DockingStateReader.h"
@@ -279,7 +280,11 @@ struct DockAreaWidgetPrivate
 	 */
 	CDockWidget* dockWidgetAt(int index)
 	{
-		return qobject_cast<CDockWidget*>(ContentsLayout->widget(index));
+#ifdef CUSTOM_CAST
+        return dynamic_cast<CDockWidget*>(ContentsLayout->widget(index));
+#else
+        return qobject_cast<CDockWidget*>(ContentsLayout->widget(index));
+#endif
 	}
 
 	/**
@@ -796,7 +801,11 @@ int CDockAreaWidget::dockWidgetsCount() const
 //============================================================================
 CDockWidget* CDockAreaWidget::dockWidget(int Index) const
 {
-	return qobject_cast<CDockWidget*>(d->ContentsLayout->widget(Index));
+#ifdef CUSTOM_CAST
+    return dynamic_cast<CDockWidget*>(d->ContentsLayout->widget(Index));
+#else
+    return qobject_cast<CDockWidget*>(d->ContentsLayout->widget(Index));
+#endif
 }
 
 
@@ -857,6 +866,12 @@ void CDockAreaWidget::updateTitleBarVisibility()
 		tabBar->setVisible(!IsAutoHide);  // Never show tab bar when auto hidden
 		d->TitleBar->autoHideTitleLabel()->setVisible(IsAutoHide);  // Always show when auto hidden, never otherwise
 		updateTitleBarButtonVisibility(Container->topLevelDockArea() == this);
+        
+        if (IsAutoHide && CDockManager::testAutoHideConfigFlag(CDockManager::AutoHideTitleBarForceCloseBtn))
+        {
+            auto closeBtn = d->TitleBar->button(TitleBarButtonClose);
+            dynamic_cast<CTitleBarButton*>(closeBtn)->forceVisible(true);
+        }
 	}
 }
 

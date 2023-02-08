@@ -365,7 +365,11 @@ public:
 // private slots: ------------------------------------------------------------
 	void onDockAreaViewToggled(bool Visible)
 	{
-		CDockAreaWidget* DockArea = qobject_cast<CDockAreaWidget*>(_this->sender());
+#ifdef CUSTOM_CAST
+        CDockAreaWidget* DockArea = dynamic_cast<CDockAreaWidget*>(_this->sender());
+#else
+        CDockAreaWidget* DockArea = qobject_cast<CDockAreaWidget*>(_this->sender());
+#endif
 		VisibleDockAreaCount += Visible ? 1 : -1;
 		onVisibleDockAreaCountChanged();
 		Q_EMIT _this->dockAreaViewToggled(DockArea, Visible);
@@ -492,6 +496,11 @@ void DockContainerWidgetPrivate::dropIntoContainer(CFloatingDockContainer* Float
     }
 
 	RootSplitter = Splitter;
+    for (int i = NewDockAreas.count() - 1; i >= 0; i--)
+    {
+        if (NewDockAreas[i]->isAutoHide())
+            NewDockAreas.removeAt(i);
+    }
 	addDockAreasToList(NewDockAreas);
 
 	// If we dropped the floating widget into the main dock container that does
@@ -640,8 +649,13 @@ void DockContainerWidgetPrivate::dropIntoSection(CFloatingDockContainer* Floatin
 //============================================================================
 void DockContainerWidgetPrivate::moveIntoCenterOfSection(QWidget* Widget, CDockAreaWidget* TargetArea)
 {
-	auto DroppedDockWidget = qobject_cast<CDockWidget*>(Widget);
-	auto DroppedArea = qobject_cast<CDockAreaWidget*>(Widget);
+#ifdef CUSTOM_CAST
+    auto DroppedDockWidget = dynamic_cast<CDockWidget*>(Widget);
+    auto DroppedArea = dynamic_cast<CDockAreaWidget*>(Widget);
+#else
+    auto DroppedDockWidget = qobject_cast<CDockWidget*>(Widget);
+    auto DroppedArea = qobject_cast<CDockAreaWidget*>(Widget);
+#endif
 
 	if (DroppedDockWidget)
 	{
@@ -686,10 +700,15 @@ void DockContainerWidgetPrivate::moveToNewSection(QWidget* Widget, CDockAreaWidg
 		moveIntoCenterOfSection(Widget, TargetArea);
 		return;
 	}
-
-
-	CDockWidget* DroppedDockWidget = qobject_cast<CDockWidget*>(Widget);
-	CDockAreaWidget* DroppedDockArea = qobject_cast<CDockAreaWidget*>(Widget);
+    
+    
+#ifdef CUSTOM_CAST
+    CDockWidget* DroppedDockWidget = dynamic_cast<CDockWidget*>(Widget);
+    CDockAreaWidget* DroppedDockArea = dynamic_cast<CDockAreaWidget*>(Widget);
+#else
+    CDockWidget* DroppedDockWidget = qobject_cast<CDockWidget*>(Widget);
+    CDockAreaWidget* DroppedDockArea = qobject_cast<CDockAreaWidget*>(Widget);
+#endif
 	CDockAreaWidget* NewDockArea;
 	if (DroppedDockWidget)
 	{
@@ -761,13 +780,21 @@ bool DockContainerWidgetPrivate::widgetResizesWithContainer(QWidget* widget)
         return true;
     }
 
+#ifdef CUSTOM_CAST
+    auto Area = dynamic_cast<CDockAreaWidget*>(widget);
+#else
     auto Area = qobject_cast<CDockAreaWidget*>(widget);
+#endif
     if(Area)
     {
         return Area->isCentralWidgetArea();
     }
 
+#ifdef CUSTOM_CAST
+    auto innerSplitter = dynamic_cast<CDockSplitter*>(widget);
+#else
     auto innerSplitter = qobject_cast<CDockSplitter*>(widget);
+#endif
     if (innerSplitter)
     {
         return innerSplitter->isResizingWithContainer();
@@ -781,8 +808,13 @@ bool DockContainerWidgetPrivate::widgetResizesWithContainer(QWidget* widget)
 //============================================================================
 void DockContainerWidgetPrivate::moveToContainer(QWidget* Widget, DockWidgetArea area)
 {
-	CDockWidget* DroppedDockWidget = qobject_cast<CDockWidget*>(Widget);
-	CDockAreaWidget* DroppedDockArea = qobject_cast<CDockAreaWidget*>(Widget);
+#ifdef CUSTOM_CAST
+    CDockWidget* DroppedDockWidget = dynamic_cast<CDockWidget*>(Widget);
+    CDockAreaWidget* DroppedDockArea = dynamic_cast<CDockAreaWidget*>(Widget);
+#else
+    CDockWidget* DroppedDockWidget = qobject_cast<CDockWidget*>(Widget);
+    CDockAreaWidget* DroppedDockArea = qobject_cast<CDockAreaWidget*>(Widget);
+#endif
 	CDockAreaWidget* NewDockArea;
 
 	if (DroppedDockWidget)
@@ -871,7 +903,11 @@ void DockContainerWidgetPrivate::appendDockAreas(const QList<CDockAreaWidget*> N
 //============================================================================
 void DockContainerWidgetPrivate::saveChildNodesState(QXmlStreamWriter& s, QWidget* Widget)
 {
-	QSplitter* Splitter = qobject_cast<QSplitter*>(Widget);
+#ifdef CUSTOM_CAST
+    QSplitter* Splitter = dynamic_cast<QSplitter*>(Widget);
+#else
+    QSplitter* Splitter = qobject_cast<QSplitter*>(Widget);
+#endif
 	if (Splitter)
 	{
 		s.writeStartElement("Splitter");
@@ -894,7 +930,11 @@ void DockContainerWidgetPrivate::saveChildNodesState(QXmlStreamWriter& s, QWidge
 	}
 	else
 	{
-		CDockAreaWidget* DockArea = qobject_cast<CDockAreaWidget*>(Widget);
+#ifdef CUSTOM_CAST
+        CDockAreaWidget* DockArea = dynamic_cast<CDockAreaWidget*>(Widget);
+#else
+        CDockAreaWidget* DockArea = qobject_cast<CDockAreaWidget*>(Widget);
+#endif
 		if (DockArea)
 		{
 			DockArea->saveState(s);
@@ -1221,7 +1261,11 @@ void DockContainerWidgetPrivate::addDockArea(CDockAreaWidget* NewDockArea, DockW
 void DockContainerWidgetPrivate::dumpRecursive(int level, QWidget* widget)
 {
 #if defined(QT_DEBUG)
-	QSplitter* Splitter = qobject_cast<QSplitter*>(widget);
+#ifdef CUSTOM_CAST
+    QSplitter* Splitter = dynamic_cast<QSplitter*>(widget);
+#else
+    QSplitter* Splitter = qobject_cast<QSplitter*>(widget);
+#endif
 	QByteArray buf;
     buf.fill(' ', level * 4);
 	if (Splitter)
@@ -1244,7 +1288,11 @@ void DockContainerWidgetPrivate::dumpRecursive(int level, QWidget* widget)
 	}
 	else
 	{
-		CDockAreaWidget* DockArea = qobject_cast<CDockAreaWidget*>(widget);
+#ifdef CUSTOM_CAST
+        CDockAreaWidget* DockArea = dynamic_cast<CDockAreaWidget*>(widget);
+#else
+        CDockAreaWidget* DockArea = qobject_cast<CDockAreaWidget*>(widget);
+#endif
 		if (!DockArea)
 		{
 			return;
@@ -1528,7 +1576,11 @@ void CDockContainerWidget::removeDockArea(CDockAreaWidget* area)
 		}
 
 		QWidget* widget = Splitter->widget(0);
-		QSplitter* ChildSplitter = qobject_cast<QSplitter*>(widget);
+#ifdef CUSTOM_CAST
+        QSplitter* ChildSplitter = dynamic_cast<QSplitter*>(widget);
+#else
+        QSplitter* ChildSplitter = qobject_cast<QSplitter*>(widget);
+#endif
 		// If the one and only content widget of the splitter is not a splitter
 		// then we are finished
 		if (!ChildSplitter)
@@ -1671,7 +1723,7 @@ void CDockContainerWidget::dropFloatingWidget(CFloatingDockContainer* FloatingWi
 	{
 		auto SideBar = sideTabBar(AutohideWidget->sideBarLocation());
 		SideBar->addAutoHideWidget(AutohideWidget);
-	}
+        AutohideWidget->dockAreaWidget()->updateTitleBarVisibility();	}
 
 	if (Dropped)
 	{ 
@@ -1847,7 +1899,11 @@ bool CDockContainerWidget::restoreState(CDockingStateReader& s, bool Testing)
 
 	d->Layout->replaceWidget(d->RootSplitter, NewRootSplitter);
 	QSplitter* OldRoot = d->RootSplitter;
-	d->RootSplitter = qobject_cast<QSplitter*>(NewRootSplitter);
+#ifdef CUSTOM_CAST
+    d->RootSplitter = dynamic_cast<QSplitter*>(NewRootSplitter);
+#else
+    d->RootSplitter = qobject_cast<QSplitter*>(NewRootSplitter);
+#endif
 	OldRoot->deleteLater();
 
 	return true;
@@ -2065,6 +2121,29 @@ QRect CDockContainerWidget::contentRect() const
 		return QRect();
 	}
 
+    if (openedDockWidgets().count() == 0)
+    {
+        auto rect = geometry();
+        rect.moveTo(0, 0);
+
+        auto leftBar = sideTabBar(SideBarLocation::SideBarLeft);
+        auto rightBar = sideTabBar(SideBarLocation::SideBarRight);
+        auto topBar = sideTabBar(SideBarLocation::SideBarTop);
+        auto bottomBar = sideTabBar(SideBarLocation::SideBarBottom);
+
+        int lw = 0;
+        int rw = 0;
+        int th = 0;
+        int bh = 0;
+        if (leftBar->isVisible()) lw = leftBar->width();
+        if (rightBar->isVisible()) rw = rightBar->width();
+        if (topBar->isVisible()) th = topBar->height();
+        if (bottomBar->isVisible()) bh = bottomBar->height();
+
+        rect.adjust(lw, th, -rw, -bh);
+        return rect;
+    }
+
 	return d->RootSplitter->geometry();
 }
 
@@ -2100,7 +2179,11 @@ void CDockContainerWidget::handleAutoHideWidgetEvent(QEvent* e, QWidget* w)
 		return;
 	}
 
-	auto AutoHideTab = qobject_cast<CAutoHideTab*>(w);
+#ifdef CUSTOM_CAST
+    auto AutoHideTab = dynamic_cast<CAutoHideTab*>(w);
+#else
+    auto AutoHideTab = qobject_cast<CAutoHideTab*>(w);
+#endif
 	if (AutoHideTab)
 	{
 		switch (e->type())
@@ -2141,7 +2224,11 @@ void CDockContainerWidget::handleAutoHideWidgetEvent(QEvent* e, QWidget* w)
 		return;
 	}
 
-	auto AutoHideContainer = qobject_cast<CAutoHideDockContainer*>(w);
+#ifdef CUSTOM_CAST
+    auto AutoHideContainer = dynamic_cast<CAutoHideDockContainer*>(w);
+#else
+    auto AutoHideContainer = qobject_cast<CAutoHideDockContainer*>(w);
+#endif
 	if (AutoHideContainer)
 	{
 		switch (e->type())

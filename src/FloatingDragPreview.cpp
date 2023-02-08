@@ -123,7 +123,11 @@ void FloatingDragPreviewPrivate::updateDropOverlays(const QPoint &GlobalPos)
 	int VisibleDockAreas = TopContainer->visibleDockAreaCount();
 
 	// Include the overlay widget we're dragging as a visible widget
+#ifdef CUSTOM_CAST
+	auto dockAreaWidget = dynamic_cast<CDockAreaWidget*>(Content);
+#else
 	auto dockAreaWidget = qobject_cast<CDockAreaWidget*>(Content);
+#endif
 	if (dockAreaWidget && dockAreaWidget->isAutoHide())
 	{
 		VisibleDockAreas++;
@@ -151,6 +155,14 @@ void FloatingDragPreviewPrivate::updateDropOverlays(const QPoint &GlobalPos)
 		{
 			ContainerOverlay->enableDropPreview(InvalidDockWidgetArea == Area);
 		}
+		ContainerOverlay->showOverlay(TopContainer);
+	}
+	// handle drop into a empty area
+	else if (!DockArea && TopContainer->openedDockWidgets().count() == 0)
+	{
+		ContainerOverlay->enableDropPreview(true);
+		DockAreaOverlay->enableDropPreview(false);
+		DockAreaOverlay->setAllowedAreas(NoDockWidgetArea);
 		ContainerOverlay->showOverlay(TopContainer);
 	}
 	else
@@ -193,8 +205,13 @@ FloatingDragPreviewPrivate::FloatingDragPreviewPrivate(CFloatingDragPreview *_pu
 //============================================================================
 void FloatingDragPreviewPrivate::createFloatingWidget()
 {
+#ifdef CUSTOM_CAST
+	CDockWidget* DockWidget = dynamic_cast<CDockWidget*>(Content);
+	CDockAreaWidget* DockArea = dynamic_cast<CDockAreaWidget*>(Content);
+#else
 	CDockWidget* DockWidget = qobject_cast<CDockWidget*>(Content);
 	CDockAreaWidget* DockArea = qobject_cast<CDockAreaWidget*>(Content);
+#endif
 
 	CFloatingDockContainer* FloatingWidget = nullptr;
 
@@ -367,8 +384,13 @@ void CFloatingDragPreview::finishDragging()
 //============================================================================
 void CFloatingDragPreview::cleanupAutoHideContainerWidget()
 {
+#ifdef CUSTOM_CAST
+	auto DroppedDockWidget = dynamic_cast<CDockWidget*>(d->Content);
+	auto DroppedArea = dynamic_cast<CDockAreaWidget*>(d->Content);
+#else
 	auto DroppedDockWidget = qobject_cast<CDockWidget*>(d->Content);
 	auto DroppedArea = qobject_cast<CDockAreaWidget*>(d->Content);
+#endif
 	if (DroppedDockWidget && DroppedDockWidget->autoHideDockContainer())
 	{
 		DroppedDockWidget->autoHideDockContainer()->cleanupAndDelete();

@@ -300,7 +300,11 @@ CDockWidgetTab* CDockAreaTabBar::currentTab() const
 	}
 	else
 	{
+#ifdef CUSTOM_CAST
+		return dynamic_cast<CDockWidgetTab*>(d->TabsLayout->itemAt(d->CurrentIndex)->widget());
+#else
 		return qobject_cast<CDockWidgetTab*>(d->TabsLayout->itemAt(d->CurrentIndex)->widget());
+#endif
 	}
 }
 
@@ -308,7 +312,11 @@ CDockWidgetTab* CDockAreaTabBar::currentTab() const
 //===========================================================================
 void CDockAreaTabBar::onTabClicked()
 {
+#ifdef CUSTOM_CAST
+	CDockWidgetTab* Tab = dynamic_cast<CDockWidgetTab*>(sender());
+#else
 	CDockWidgetTab* Tab = qobject_cast<CDockWidgetTab*>(sender());
+#endif
 	if (!Tab)
 	{
 		return;
@@ -327,7 +335,11 @@ void CDockAreaTabBar::onTabClicked()
 //===========================================================================
 void CDockAreaTabBar::onTabCloseRequested()
 {
+#ifdef CUSTOM_CAST
+	CDockWidgetTab* Tab = dynamic_cast<CDockWidgetTab*>(sender());
+#else
 	CDockWidgetTab* Tab = qobject_cast<CDockWidgetTab*>(sender());
+#endif
 	int Index = d->TabsLayout->indexOf(Tab);
 	closeTab(Index);
 }
@@ -336,7 +348,11 @@ void CDockAreaTabBar::onTabCloseRequested()
 //===========================================================================
 void CDockAreaTabBar::onCloseOtherTabsRequested()
 {
+#ifdef CUSTOM_CAST
+	auto Sender = dynamic_cast<CDockWidgetTab*>(sender());
+#else
 	auto Sender = qobject_cast<CDockWidgetTab*>(sender());
+#endif
 	for (int i = 0; i < count(); ++i)
 	{
 		auto Tab = tab(i);
@@ -368,14 +384,23 @@ CDockWidgetTab* CDockAreaTabBar::tab(int Index) const
 	{
 		return nullptr;
 	}
+	
+#ifdef CUSTOM_CAST
+	return dynamic_cast<CDockWidgetTab*>(d->TabsLayout->itemAt(Index)->widget());
+#else
 	return qobject_cast<CDockWidgetTab*>(d->TabsLayout->itemAt(Index)->widget());
+#endif
 }
 
 
 //===========================================================================
 void CDockAreaTabBar::onTabWidgetMoved(const QPoint& GlobalPos)
 {
+#ifdef CUSTOM_CAST
+	CDockWidgetTab* MovingTab = dynamic_cast<CDockWidgetTab*>(sender());
+#else
 	CDockWidgetTab* MovingTab = qobject_cast<CDockWidgetTab*>(sender());
+#endif
 	if (!MovingTab)
 	{
 		return;
@@ -440,7 +465,11 @@ void CDockAreaTabBar::closeTab(int Index)
 bool CDockAreaTabBar::eventFilter(QObject *watched, QEvent *event)
 {
 	bool Result = Super::eventFilter(watched, event);
+#ifdef CUSTOM_CAST
+	CDockWidgetTab* Tab = dynamic_cast<CDockWidgetTab*>(watched);
+#else
 	CDockWidgetTab* Tab = qobject_cast<CDockWidgetTab*>(watched);
+#endif
 	if (!Tab)
 	{
 		return Result;

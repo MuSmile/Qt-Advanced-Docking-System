@@ -227,7 +227,11 @@ T findParent(const QWidget* w)
 	QWidget* parentWidget = w->parentWidget();
 	while (parentWidget)
 	{
+#ifdef CUSTOM_CAST
+		T ParentImpl = dynamic_cast<T>(parentWidget);
+#else
 		T ParentImpl = qobject_cast<T>(parentWidget);
+#endif
 		if (ParentImpl)
 		{
 			return ParentImpl;

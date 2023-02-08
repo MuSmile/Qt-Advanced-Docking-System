@@ -542,7 +542,11 @@ bool CAutoHideDockContainer::eventFilter(QObject* watched, QEvent* event)
 	}
 	else if (event->type() == QEvent::MouseButtonPress)
 	{
+#ifdef CUSTOM_CAST
+		auto widget = dynamic_cast<QWidget*>(watched);
+#else
 		auto widget = qobject_cast<QWidget*>(watched);
+#endif
 		// Ignore non widget events
 		if (!widget)
 		{

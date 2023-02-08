@@ -682,10 +682,11 @@ void CDockAreaTitleBar::contextMenuEvent(QContextMenuEvent* ev)
 	}
 
 	const bool isAutoHide = d->DockArea->isAutoHide();
+	const bool isFloating = d->DockArea->dockContainer()->isFloating();
 	const bool isTopLevelArea = d->DockArea->isTopLevelArea();
 	QAction* Action;
 	QMenu Menu(this);
-	if (!isTopLevelArea)
+	if (!isTopLevelArea || !isFloating)
 	{
 		Action = Menu.addAction(isAutoHide ? tr("Detach") : tr("Detach Group"),
 			this, SLOT(onUndockButtonClicked()));
@@ -790,6 +791,18 @@ void CTitleBarButton::setVisible(bool visible)
 	// 'visible' can stay 'true' if and only if this button is configured to generaly visible:
 	visible = visible && this->Visible;
 
+	// 'visible' can stay 'true' unless: this button is configured to be invisible when it is disabled and it is currently disabled:
+	if (visible && HideWhenDisabled)
+	{
+		visible = isEnabled();
+	}
+
+	Super::setVisible(visible);
+}
+
+//============================================================================
+void CTitleBarButton::forceVisible(bool visible)
+{
 	// 'visible' can stay 'true' unless: this button is configured to be invisible when it is disabled and it is currently disabled:
 	if (visible && HideWhenDisabled)
 	{

@@ -71,6 +71,7 @@ else()
     add_library(qtadvanceddocking SHARED ${ads_SRCS} ${ads_HEADERS})
     target_compile_definitions(qtadvanceddocking PRIVATE ADS_SHARED_EXPORT)
 endif()
+target_compile_definitions(qtadvanceddocking PRIVATE CUSTOM_CAST)
 
 add_library(ads::qtadvanceddocking ALIAS qtadvanceddocking)
 

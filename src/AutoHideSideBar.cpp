@@ -294,7 +294,11 @@ bool CAutoHideSideBar::eventFilter(QObject *watched, QEvent *event)
 	}
 
 	// As soon as on tab is shown, we need to show the side tab bar
+#ifdef CUSTOM_CAST
+	auto Tab = dynamic_cast<CAutoHideTab*>(watched);
+#else
 	auto Tab = qobject_cast<CAutoHideTab*>(watched);
+#endif
 	if (Tab)
 	{
 		show();
@@ -312,7 +316,11 @@ Qt::Orientation CAutoHideSideBar::orientation() const
 //============================================================================
 CAutoHideTab* CAutoHideSideBar::tabAt(int index) const
 {
+#ifdef CUSTOM_CAST
+    return dynamic_cast<CAutoHideTab*>(d->TabsLayout->itemAt(index)->widget());
+#else
     return qobject_cast<CAutoHideTab*>(d->TabsLayout->itemAt(index)->widget());
+#endif
 }
 
 

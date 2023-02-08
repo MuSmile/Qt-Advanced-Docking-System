@@ -493,7 +493,11 @@ CDockManager::CDockManager(QWidget *parent) :
 {
 	createRootSplitter();
 	createSideTabBarWidgets();
+#ifdef CUSTOM_CAST
+	QMainWindow* MainWindow = dynamic_cast<QMainWindow*>(parent);
+#else
 	QMainWindow* MainWindow = qobject_cast<QMainWindow*>(parent);
+#endif
 	if (MainWindow)
 	{
 		MainWindow->setCentralWidget(this);
