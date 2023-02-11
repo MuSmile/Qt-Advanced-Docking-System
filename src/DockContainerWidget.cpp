@@ -1960,6 +1960,13 @@ void CDockContainerWidget::createSideTabBarWidgets()
         d->SideTabBarWidgets[Area] = new CAutoHideSideBar(this, Area);
         d->Layout->addWidget(d->SideTabBarWidgets[Area], 0, 1);
 	}
+	
+	{
+		d->Layout->addWidget(new QWidget(), 0, 0);
+		d->Layout->addWidget(new QWidget(), 0, 2);
+		d->Layout->addWidget(new QWidget(), 2, 0);
+		d->Layout->addWidget(new QWidget(), 2, 2);
+	}
 }
 
 
