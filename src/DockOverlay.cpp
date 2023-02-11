@@ -338,9 +338,9 @@ CDockOverlay::CDockOverlay(QWidget* parent, eMode Mode) :
 	d->Mode = Mode;
 	d->Cross = new CDockOverlayCross(this);
 #ifdef Q_OS_LINUX
-	setWindowFlags(Qt::Tool | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint);
+	setWindowFlags(Qt::Tool | Qt::FramelessWindowHint | Qt::NoDropShadowWindowHint | Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint);
 #else
-	setWindowFlags(Qt::Tool | Qt::FramelessWindowHint);
+	setWindowFlags(Qt::Tool | Qt::FramelessWindowHint | Qt::NoDropShadowWindowHint);
 #endif
 	setWindowOpacity(1);
 	setWindowTitle("DockOverlay");

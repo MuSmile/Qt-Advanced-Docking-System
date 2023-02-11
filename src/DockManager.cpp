@@ -698,7 +698,11 @@ const QList<CFloatingDockContainer*> CDockManager::floatingWidgets() const
 //============================================================================
 unsigned int CDockManager::zOrderIndex() const
 {
+#ifdef Q_OS_MACOS
+	return CDockContainerWidget::zOrderIndex();
+#else
 	return 0;
+#endif
 }
 
 
