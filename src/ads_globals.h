@@ -37,6 +37,7 @@
 #include <QDebug>
 #include <QStyle>
 #include <QMouseEvent>
+#include <QMenu>
 
 #include <iostream>
 
@@ -334,6 +335,8 @@ void repolishStyle(QWidget* w, eRepolishChildOptions Options = RepolishIgnoreChi
  * Returns the geometry of the given widget in global space
  */
 QRect globalGeometry(QWidget* w);
+
+void applyCustomStyleOnMenu(QMenu* menu);
 
 } // namespace internal
 } // namespace ads

@@ -417,6 +417,12 @@ QRect globalGeometry(QWidget* w)
     return g;
 }
 
+void applyCustomStyleOnMenu(QMenu* menu)
+{
+	menu->setAttribute(Qt::WA_TranslucentBackground);
+	menu->setWindowFlag(Qt::FramelessWindowHint, true);
+}
+
 } // namespace internal
 } // namespace ads
 

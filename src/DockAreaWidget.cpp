@@ -867,7 +867,7 @@ void CDockAreaWidget::updateTitleBarVisibility()
 		d->TitleBar->autoHideTitleLabel()->setVisible(IsAutoHide);  // Always show when auto hidden, never otherwise
 		updateTitleBarButtonVisibility(Container->topLevelDockArea() == this);
         
-        if (IsAutoHide && CDockManager::testAutoHideConfigFlag(CDockManager::AutoHideTitleBarForceCloseBtn))
+        if (IsAutoHide && CDockManager::testAutoHideConfigFlag(CDockManager::AutoHideTitleForceHasCloseBtn))
         {
             auto closeBtn = d->TitleBar->button(TitleBarButtonClose);
             dynamic_cast<CTitleBarButton*>(closeBtn)->forceVisible(true);

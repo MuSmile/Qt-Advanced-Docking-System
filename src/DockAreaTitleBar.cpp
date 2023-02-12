@@ -184,6 +184,7 @@ void DockAreaTitleBarPrivate::createButtons()
 	TabsMenuButton->setPopupMode(QToolButton::InstantPopup);
 	internal::setButtonIcon(TabsMenuButton, QStyle::SP_TitleBarUnshadeButton, ads::DockAreaMenuIcon);
 	QMenu* TabsMenu = new QMenu(TabsMenuButton);
+	if (CDockManager::testConfigFlag(CDockManager::AllMenusHaveCustomStyle)) internal::applyCustomStyleOnMenu(TabsMenu);
 #ifndef QT_NO_TOOLTIP
 	TabsMenu->setToolTipsVisible(true);
 #endif
@@ -686,6 +687,8 @@ void CDockAreaTitleBar::contextMenuEvent(QContextMenuEvent* ev)
 	const bool isTopLevelArea = d->DockArea->isTopLevelArea();
 	QAction* Action;
 	QMenu Menu(this);
+	bool isCustomMenu = CDockManager::testConfigFlag(CDockManager::AllMenusHaveCustomStyle);
+	if (isCustomMenu) internal::applyCustomStyleOnMenu(&Menu);
 	if (!isTopLevelArea || !isFloating)
 	{
 		Action = Menu.addAction(isAutoHide ? tr("Detach") : tr("Detach Group"),
@@ -700,6 +703,7 @@ void CDockAreaTitleBar::contextMenuEvent(QContextMenuEvent* ev)
 			if (!isAutoHide)
 			{
 				auto menu = Menu.addMenu(tr("Pin Group To..."));
+				if (isCustomMenu) internal::applyCustomStyleOnMenu(menu);
 				menu->setEnabled(AreaIsPinnable);
 				d->createAutoHideToAction(tr("Top"), SideBarTop, menu);
 				d->createAutoHideToAction(tr("Left"), SideBarLeft, menu);
