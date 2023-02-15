@@ -511,7 +511,7 @@ void CDockOverlay::paintEvent(QPaintEvent* event)
     Color = Color.lighter(130);
     Color.setAlpha(64);
     painter.setBrush(Color);
-	painter.drawRect(r.adjusted(0, 0, -1, -1));
+	painter.drawRoundedRect(r.adjusted(0, 0, -1, -1), 3, 3);
 	d->DropAreaRect = r;
 }
 
@@ -604,9 +604,9 @@ CDockOverlayCross::CDockOverlayCross(CDockOverlay* overlay) :
 {
 	d->DockOverlay = overlay;
 #ifdef Q_OS_LINUX
-	setWindowFlags(Qt::Tool | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint);
+	setWindowFlags(Qt::Tool | Qt::FramelessWindowHint | Qt::NoDropShadowWindowHint | Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint);
 #else
-	setWindowFlags(Qt::Tool | Qt::FramelessWindowHint);
+	setWindowFlags(Qt::Tool | Qt::FramelessWindowHint | Qt::NoDropShadowWindowHint);
 #endif
 	setWindowTitle("DockOverlayCross");
 	setAttribute(Qt::WA_TranslucentBackground);
