@@ -986,7 +986,7 @@ void CFloatingDockContainer::moveFloating()
 		// that by resetting the active window to the floating widget after
 		// updating the overlays.
         // QApplication::setActiveWindow(this);
-        raise();
+        this->window()->activateWindow();
 #endif
 		break;
 	default:
@@ -1216,7 +1216,7 @@ void CFloatingDockContainer::moveEvent(QMoveEvent *event)
         // that by resetting the active window to the floating widget after
         // updating the overlays.
         // QApplication::setActiveWindow(this);
-        raise();
+        this->window()->activateWindow();
 		break;
 
 	case DraggingFloatingWidget:
@@ -1226,7 +1226,7 @@ void CFloatingDockContainer::moveEvent(QMoveEvent *event)
 		// that by resetting the active window to the floating widget after
 		// updating the overlays.
         // QApplication::setActiveWindow(this);
-        raise();
+        this->window()->activateWindow();
 		break;
 	default:
 		break;
