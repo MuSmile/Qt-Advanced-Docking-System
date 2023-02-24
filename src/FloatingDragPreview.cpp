@@ -323,6 +323,12 @@ void CFloatingDragPreview::moveFloating()
 	    - QPoint(BorderSize, 0);
 	move(moveToPos);
 	d->updateDropOverlays(QCursor::pos());
+
+#ifdef Q_OS_MACOS
+	// to fix visual issue while moving between screens on MacOS
+	// need a better way to fix this issue
+	repaint();
+#endif
 }
 
 
