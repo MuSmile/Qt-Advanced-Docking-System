@@ -561,6 +561,13 @@ void CDockWidgetTab::contextMenuEvent(QContextMenuEvent* ev)
 
 
 //============================================================================
+bool CDockWidgetTab::hasIconLabel() const
+{
+	return d->IconLabel != nullptr;
+}
+
+
+//============================================================================
 bool CDockWidgetTab::isActiveTab() const
 {
 	return d->IsActiveTab;

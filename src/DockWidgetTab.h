@@ -50,6 +50,7 @@ class CDockManager;
 class ADS_EXPORT CDockWidgetTab : public QFrame
 {
 	Q_OBJECT
+	Q_PROPERTY(bool hasIcon READ hasIconLabel)
 	Q_PROPERTY(bool activeTab READ isActiveTab WRITE setActiveTab NOTIFY activeTabChanged)
 	Q_PROPERTY(QSize iconSize READ iconSize WRITE setIconSize)
 
@@ -90,6 +91,11 @@ public:
 	 * Virtual Destructor
 	 */
 	virtual ~CDockWidgetTab();
+
+	/**
+	 * Returns true, if this tab has icon
+	 */
+	bool hasIconLabel() const;
 
 	/**
 	 * Returns true, if this is the active tab
