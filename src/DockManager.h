@@ -396,6 +396,8 @@ public:
 	 * widgets map so that it is possible to iterate over all dock widgets
 	 */
 	QMap<QString, CDockWidget*> dockWidgetsMap() const;
+	
+	void updateDockWidgetsMapKey(const QString& Old, const QString& New);
 
 	/**
 	 * Returns the list of all active and visible dock containers

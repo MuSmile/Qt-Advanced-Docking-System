@@ -95,6 +95,7 @@ struct DockWidgetPrivate
 	CDockWidget::eMinimumSizeHintMode MinimumSizeHintMode = CDockWidget::MinimumSizeHintFromDockWidget;
 	WidgetFactory* Factory = nullptr;
 	QPointer<CAutoHideTab> SideTabWidget;
+	QString SerializedData;
 	
 	/**
 	 * Private data constructor
@@ -734,6 +735,8 @@ void CDockWidget::saveState(QXmlStreamWriter& s) const
 {
 	s.writeStartElement("Widget");
 	s.writeAttribute("Name", objectName());
+	auto Data = serializedData();
+	if (!Data.isEmpty()) s.writeAttribute("Data", Data);
 	s.writeAttribute("Closed", QString::number(d->Closed ? 1 : 0));
 	s.writeEndElement();
 }
@@ -841,6 +844,24 @@ void CDockWidget::setIcon(const QIcon& Icon)
 QIcon CDockWidget::icon() const
 {
 	return d->TabWidget->icon();
+}
+
+
+//============================================================================
+void CDockWidget::setSerializedData(const QString &Data)
+{
+	if (d->SerializedData != Data)
+	{
+		d->SerializedData = Data;
+		// Q_EMIT serializedDataChanged(Data);
+	}
+}
+
+
+//============================================================================
+QString CDockWidget::serializedData() const
+{
+	return d->SerializedData;
 }
 
 

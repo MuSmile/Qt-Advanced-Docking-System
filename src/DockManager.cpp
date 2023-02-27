@@ -218,6 +218,9 @@ bool DockManagerPrivate::restoreContainer(int Index, CDockingStateReader& stream
 	{
 		CFloatingDockContainer* FloatingWidget = new CFloatingDockContainer(_this);
 		Result = FloatingWidget->restoreState(stream, Testing);
+#ifdef Q_OS_MACOS
+		FloatingWidget->show();
+#endif
 	}
 	else
 	{
@@ -225,6 +228,7 @@ bool DockManagerPrivate::restoreContainer(int Index, CDockingStateReader& stream
 		auto Container = Containers[Index];
 		if (Container->isFloating())
 		{
+			printf("shit\n");
 			Result = Container->floatingWidget()->restoreState(stream, Testing);
 		}
 		else
@@ -440,7 +444,9 @@ bool DockManagerPrivate::restoreState(const QByteArray& State, int version)
     }
 
     // Hide updates of floating widgets from use
+#ifndef Q_OS_MACOS
     hideFloatingWidgets();
+#endif
     markDockWidgetsDirty();
 
     if (!restoreStateFromXml(state, version))
@@ -942,6 +948,16 @@ void CDockManager::removeDockWidget(CDockWidget* Dockwidget)
 QMap<QString, CDockWidget*> CDockManager::dockWidgetsMap() const
 {
 	return d->DockWidgetsMap;
+}
+
+
+//============================================================================
+void CDockManager::updateDockWidgetsMapKey(const QString& Old, const QString& New)
+{
+	if (Old == New) return;
+	auto DockWidget = d->DockWidgetsMap.value(Old, nullptr);
+	d->DockWidgetsMap.remove(Old);
+	d->DockWidgetsMap.insert(New, DockWidget);
 }
 
 

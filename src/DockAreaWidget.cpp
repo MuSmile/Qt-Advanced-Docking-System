@@ -989,6 +989,8 @@ bool CDockAreaWidget::restoreState(CDockingStateReader& s, CDockAreaWidget*& Cre
 			return false;
 		}
 
+		auto Data = s.attributes().value("Data");
+
 		bool Closed = s.attributes().value("Closed").toInt(&Ok);
 		if (!Ok)
 		{
@@ -1010,12 +1012,15 @@ bool CDockAreaWidget::restoreState(CDockingStateReader& s, CDockAreaWidget*& Cre
 
 		// We hide the DockArea here to prevent the short display (the flashing)
 		// of the dock areas during application startup
+#ifndef Q_OS_MACOS
 		DockArea->hide();
+#endif
         DockArea->addDockWidget(DockWidget);
 		DockWidget->setToggleViewActionChecked(!Closed);
 		DockWidget->setClosedState(Closed);
 		DockWidget->setProperty(internal::ClosedProperty, Closed);
 		DockWidget->setProperty(internal::DirtyProperty, false);
+		if (!Data.isEmpty()) DockWidget->setSerializedData(Data.toString());
 	}
 
 	if (Testing)

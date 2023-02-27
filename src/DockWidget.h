@@ -427,6 +427,17 @@ public:
      */
     QIcon icon() const;
 
+
+    /**
+     * Sets the dock widget serialized data
+     */
+    void setSerializedData(const QString &Data);
+
+    /**
+     * Returns the dock widget serialized data
+     */
+    QString serializedData() const;
+
     /**
      * This function returns the dock widget top tool bar.
      * If no toolbar is assigned, this function returns nullptr. To get a vaild

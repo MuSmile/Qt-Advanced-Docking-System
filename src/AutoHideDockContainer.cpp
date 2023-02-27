@@ -413,6 +413,8 @@ void CAutoHideDockContainer::saveState(QXmlStreamWriter& s)
 {
 	s.writeStartElement("Widget");
 	s.writeAttribute("Name", d->DockWidget->objectName());
+	auto Data = d->DockWidget->serializedData();
+	if (!Data.isEmpty()) s.writeAttribute("Data", Data);
 	s.writeAttribute("Closed", QString::number(d->DockWidget->isClosed() ? 1 : 0));
     s.writeAttribute("Size", QString::number(d->isHorizontal() ? d->Size.height() : d->Size.width()));
 	s.writeEndElement();

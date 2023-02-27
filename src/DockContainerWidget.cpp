@@ -1120,6 +1120,8 @@ bool DockContainerWidgetPrivate::restoreSideBar(CDockingStateReader& s,
 		{
 			return false;
 		}
+		
+		auto Data = s.attributes().value("Data");
 
 		bool Ok;
 		bool Closed = s.attributes().value("Closed").toInt(&Ok);
@@ -1158,6 +1160,7 @@ bool DockContainerWidgetPrivate::restoreSideBar(CDockingStateReader& s,
 		AutoHideContainer->setSize(Size);
         DockWidget->setProperty(internal::ClosedProperty, Closed);
 		DockWidget->setProperty(internal::DirtyProperty, false);
+		if (!Data.isEmpty()) DockWidget->setSerializedData(Data.toString());
 	}
 
 	return true;
