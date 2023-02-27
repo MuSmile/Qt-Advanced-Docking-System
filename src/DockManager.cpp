@@ -218,9 +218,7 @@ bool DockManagerPrivate::restoreContainer(int Index, CDockingStateReader& stream
 	{
 		CFloatingDockContainer* FloatingWidget = new CFloatingDockContainer(_this);
 		Result = FloatingWidget->restoreState(stream, Testing);
-#ifdef Q_OS_MACOS
 		FloatingWidget->show();
-#endif
 	}
 	else
 	{
@@ -228,7 +226,6 @@ bool DockManagerPrivate::restoreContainer(int Index, CDockingStateReader& stream
 		auto Container = Containers[Index];
 		if (Container->isFloating())
 		{
-			printf("shit\n");
 			Result = Container->floatingWidget()->restoreState(stream, Testing);
 		}
 		else
