@@ -511,7 +511,7 @@ void CDockOverlay::paintEvent(QPaintEvent* event)
     Color = Color.lighter(130);
     Color.setAlpha(64);
     painter.setBrush(Color);
-	painter.drawRoundedRect(r.adjusted(0, 0, -1, -1), 3, 3);
+	painter.drawRect(r.adjusted(0, 0, -1, -1));
 	d->DropAreaRect = r;
 }
 

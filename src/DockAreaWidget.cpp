@@ -1012,9 +1012,10 @@ bool CDockAreaWidget::restoreState(CDockingStateReader& s, CDockAreaWidget*& Cre
 
 		// We hide the DockArea here to prevent the short display (the flashing)
 		// of the dock areas during application startup
-// #ifndef Q_OS_MACOS
-// 		DockArea->hide();
-// #endif
+
+		// but,,, there is a new disappearing issue on dock widgets if hided here...
+		// so, we choose let it go...
+		// DockArea->hide();
         DockArea->addDockWidget(DockWidget);
 		DockWidget->setToggleViewActionChecked(!Closed);
 		DockWidget->setClosedState(Closed);
