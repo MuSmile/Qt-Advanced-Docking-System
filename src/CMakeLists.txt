@@ -124,7 +124,7 @@ write_basic_package_version_file(
 #     RUNTIME DESTINATION bin
 #     LIBRARY DESTINATION lib
 #     ARCHIVE DESTINATION lib
-#     INCLUDES DESTINATION include
+#     INCLUDES DESTINATION include/${library_name}
 # )
 
 # install(EXPORT adsTargets
