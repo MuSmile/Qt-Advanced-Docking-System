@@ -525,8 +525,6 @@ void CDockWidgetTab::contextMenuEvent(QContextMenuEvent* ev)
     const bool isDetachable = isFloatable; // && isNotOnlyTabInContainer;
 	QAction* Action;
 	QMenu Menu(this);
-	bool isCustomMenu = CDockManager::testConfigFlag(CDockManager::AllMenusHaveCustomStyle);
-	if (isCustomMenu) internal::applyCustomStyleOnMenu(&Menu);
 
     // if (!isTopLevelArea)
     if (!isTopLevelArea || !isFloating)
@@ -540,7 +538,6 @@ void CDockWidgetTab::contextMenuEvent(QContextMenuEvent* ev)
 			Action->setEnabled(IsPinnable);
 
 			auto menu = Menu.addMenu(tr("Pin To..."));
-			if (isCustomMenu) internal::applyCustomStyleOnMenu(menu);
 			menu->setEnabled(IsPinnable);
 			d->createAutoHideToAction(tr("Top"), SideBarTop, menu);
 			d->createAutoHideToAction(tr("Left"), SideBarLeft, menu);

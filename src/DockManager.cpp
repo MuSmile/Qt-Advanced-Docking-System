@@ -507,7 +507,6 @@ CDockManager::CDockManager(QWidget *parent) :
 	}
 
 	d->ViewMenu = new QMenu(tr("Show View"), this);
-	if (testConfigFlag(CDockManager::AllMenusHaveCustomStyle)) internal::applyCustomStyleOnMenu(d->ViewMenu);
 	d->DockAreaOverlay = new CDockOverlay(this, CDockOverlay::ModeDockAreaOverlay);
 	d->ContainerOverlay = new CDockOverlay(this, CDockOverlay::ModeContainerOverlay);
 	d->Containers.append(this);
@@ -1107,14 +1106,12 @@ QAction* CDockManager::addToggleViewActionToMenu(QAction* ToggleViewAction,
 	const QString& Group, const QIcon& GroupIcon)
 {
 	bool AlphabeticallySorted = (MenuAlphabeticallySorted == d->MenuInsertionOrder);
-	bool UseCustomMenu = testConfigFlag(CDockManager::AllMenusHaveCustomStyle);
 	if (!Group.isEmpty())
 	{
 		QMenu* GroupMenu = d->ViewMenuGroups.value(Group, 0);
 		if (!GroupMenu)
 		{
 			GroupMenu = new QMenu(Group, this);
-			if (UseCustomMenu) internal::applyCustomStyleOnMenu(GroupMenu);
 			GroupMenu->setIcon(GroupIcon);
 			d->addActionToMenu(GroupMenu->menuAction(), d->ViewMenu, AlphabeticallySorted);
 			d->ViewMenuGroups.insert(Group, GroupMenu);

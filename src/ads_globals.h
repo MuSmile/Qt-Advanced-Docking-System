@@ -336,7 +336,6 @@ void repolishStyle(QWidget* w, eRepolishChildOptions Options = RepolishIgnoreChi
  */
 QRect globalGeometry(QWidget* w);
 
-void applyCustomStyleOnMenu(QMenu* menu);
 
 } // namespace internal
 } // namespace ads
